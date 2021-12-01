@@ -19,7 +19,7 @@ MoyuScript/bilibili-api
 2. 安装ffmpeg https://ffmpeg.org/download.html
 3. 执行pip install -r requirements.txt
 4. 修改config文件夹下的配置文件config.json
-5. 执行python main.py <配置文件> 
+5. 执行python main.py config/config.json config/passwd.json 
    
 ## 配置文件字段解释
 
@@ -54,7 +54,7 @@ MoyuScript/bilibili-api
 - uploader: 上传器相关设置
   - account: 上传账户信息
     - username: 用户名
-    - password: 密码
+    - ~~password: 密码~~ 现在密码写到passwd.json文件中
   - copyright: 稿件类型（1：自制，2：转载）**警告！未经授权投稿“自制”可能导致稿件无法通过审核！**
   - record: 录播上传设置
     - upload_record: 是否上传录播。默认：true

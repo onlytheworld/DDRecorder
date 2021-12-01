@@ -1,0 +1,66 @@
+{
+    "root": {
+        "check_interval": 60,
+        "print_interval": 10,
+        "data_path": "./",
+        "logger": {
+            "log_path": "./log",
+            "log_level": "INFO"
+        },
+        "request_header": {},
+        "uploader": {
+            "upload_by_edit": false,
+            "thread_pool_workers": 1,
+            "max_retry": 10
+        },
+        "enable_baiduyun": false
+    },
+    "spec": [
+        {
+            "room_id": "5561470",
+            "recorder": {
+                "keep_raw_record": false
+            },
+            "parser": {
+                "interval": 30,
+                "up_ratio": 2.5,
+                "down_ratio": 0.75,
+                "topK": 5
+            },
+            "clipper": {
+                "enable_clipper": false,
+                "min_length": 30,
+                "start_offset": -20,
+                "end_offset": 10
+            },
+            "uploader": {
+                "account": {
+                    "username": "username1"
+                },
+                "copyright": 2,
+                "record": {
+                    "upload_record": true,
+                    "keep_record_after_upload": false,
+                    "split_interval": 3600,
+                    "title": "【Mia米娅-】{date}直播录播",
+                    "tid": 27,
+                    "tags": [
+                        "直播录播",
+                        "虚拟主播",
+                        "Mia米娅-"
+                    ],
+                    "desc": "{date}录播\n直播标题：{title}\nMia米娅-：https://space.bilibili.com/780791"
+                },
+                "clips": {
+                    "upload_clips": false,
+                    "keep_clips_after_upload": false,
+                    "title": "",
+                    "tid": 27,
+                    "tags": [],
+                    "desc": ""
+                }
+            },
+            "backup": false
+        }
+    ]
+}
