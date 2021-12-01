@@ -1,13 +1,14 @@
-from collections import Counter
-import jieba
-import os
+import ctypes
 import datetime
 import logging
+import os
 import platform
-import ctypes
-from enum import Enum
-import prettytable as pt
 import threading
+from collections import Counter
+from enum import Enum
+
+import jieba
+import prettytable as pt
 
 
 def is_windows() -> bool:
@@ -19,16 +20,29 @@ if is_windows():
     import winreg
 
 
-def get_log_level(config: dict) -> int:
-    if config['root']['logger']['log_level'] == 'DEBUG':
+def get_log_level(log_level: str) -> int:
+    if log_level == 'DEBUG':
         return logging.DEBUG
-    if config['root']['logger']['log_level'] == 'INFO':
+    if log_level == 'INFO':
         return logging.INFO
-    if config['root']['logger']['log_level'] == 'WARN':
+    if log_level == 'WARN':
         return logging.WARN
-    if config['root']['logger']['log_level'] == 'ERROR':
+    if log_level == 'ERROR':
         return logging.ERROR
     return logging.INFO
+
+
+def get_logger(config: dict, logname: str):
+    logger = logging.getLogger(logname)
+    logger.setLevel(get_log_level(config['root']['logger']['log_level']))
+    handler = logging.FileHandler(os.path.join(config['root']['logger']['log_path'],
+                                               logname+"_"+datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')+'.log'),
+                                  mode="a", encoding="utf-8")
+    handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(thread)d %(threadName)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+        '%a, %d %b %Y %H:%M:%S'))
+    logger.addHandler(handler)
+    return logger
 
 
 def check_and_create_dir(dirs: str) -> None:
@@ -133,17 +147,17 @@ class state(Enum):
     UPLOADING_TO_BAIDUYUN = 4
 
     def __str__(self):
-        if self.value == -1:
+        if self.value == self.ERROR.value:
             return "错误！"
-        if self.value == 0:
+        if self.value == self.WAITING_FOR_LIVE_START.value:
             return "摸鱼中"
-        if self.value == 1:
+        if self.value == self.LIVE_STARTED.value:
             return "正在录制"
-        if self.value == 2:
+        if self.value == self.PROCESSING_RECORDS.value:
             return "正在处理视频"
-        if self.value == 3:
+        if self.value == self.UPLOADING_TO_BILIBILI.value:
             return "正在上传至Bilibili"
-        if self.value == 4:
+        if self.value == self.UPLOADING_TO_BAIDUYUN.value:
             return "正在上传至百度网盘"
 
     def __int__(self):
@@ -154,12 +168,11 @@ def print_log(runner_list: list) -> str:
     tb = pt.PrettyTable()
     tb.field_names = ["TID", "平台", "房间号", "直播状态", "程序状态", "状态变化时间"]
     for runner in runner_list.values():
-        tb.add_row([runner.native_id, runner.mr.bl.site_name, runner.mr.bl.room_id, "是" if runner.mr.bl.live_status else "否",
+        tb.add_row([runner.name, runner.mr.bl.site_name, runner.mr.bl.room_id, "是" if runner.mr.bl.live_status else "否",
                     str(state(runner.mr.current_state.value)), datetime.datetime.fromtimestamp(runner.mr.state_change_time.value)])
-    print(
-        f"    DDRecorder  当前时间：{datetime.datetime.now()} 正在工作线程数：{threading.activeCount()}\n")
-    print(tb)
-    print("\n")
+    logging.info(f"正在工作线程数：{threading.activeCount()}\n{tb}\n")
+    # logging.info(tb)
+    # logging.info("\n")
 
 
 def get_words(txt, topK=5):

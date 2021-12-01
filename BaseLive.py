@@ -2,6 +2,7 @@ import abc
 import datetime
 import logging
 import traceback
+
 import requests
 import urllib3
 from requests.adapters import HTTPAdapter
@@ -21,18 +22,17 @@ class BaseLive(metaclass=abc.ABCMeta):
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36 '
         }
         self.headers = {**default_headers, **
-                        config.get('root', {}).get('request_header', {})}
+                        config['root']['request_header']}
         self.session = requests.session()
         self.session.mount('https://', HTTPAdapter(max_retries=3))
         self.room_id = ''
         self.site_name = ''
         self.site_domain = ''
-        self.config = config
         self.__last_check_time = datetime.datetime.now(
-        )+datetime.timedelta(seconds=-config.get('root', {}).get('check_interval', 60))
+        )+datetime.timedelta(seconds=-config['root']['check_interval'])
         self.__live_status = False
         self.__allowed_check_interval = datetime.timedelta(
-            seconds=config.get('root', {}).get('check_interval', 60))
+            seconds=config['root']['check_interval'])
 
     def common_request(self, method: str, url: str, params: dict = None, data: dict = None) -> requests.Response:
         try:

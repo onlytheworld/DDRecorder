@@ -1,3 +1,11 @@
 {
-    "python.pythonPath": "C:\\Users\\12050\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+    "python.autoComplete.extraPaths": [
+        "D:\\Program Files (x86)\\python\\Lib\\site-packages",
+        "D:\\Program Files (x86)\\python\\Scripts",
+    ],
+    "python.pythonPath": "D:\\Program Files (x86)\\python\\python.exe",
+    "python.analysis.extraPaths": [
+        "D:\\Program Files (x86)\\python\\Lib\\site-packages",
+        "D:\\Program Files (x86)\\python\\Scripts"
+    ]
 }

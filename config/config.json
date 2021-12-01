@@ -1,1 +1,113 @@
-{"root": {"check_interval": 60, "print_interval": 10, "data_path": "./", "logger": {"log_path": "./log", "log_level": "DEBUG"}, "request_header": {}, "uploader": {"upload_by_edit": true, "thread_pool_workers": 1, "max_retry": 30}, "enable_baiduyun": false}, "spec": [{"room_id": "566227", "recorder": {"keep_raw_record": false}, "parser": {"interval": 30, "up_ratio": 2.5, "down_ratio": 0.75, "topK": 5}, "clipper": {"enable_clipper": false, "min_length": 30, "start_offset": -20, "end_offset": 10}, "uploader": {"account": {"username": "account@example.com", "password": "password"}, "copyright": 2, "record": {"upload_record": true, "keep_record_after_upload": true, "split_interval": 3600, "title": "【阳向心美】{date}直播录播", "tid": 27, "tags": ["直播录播", "阳向心美", "虚拟主播", "VTuber", "虚拟UP主"], "desc": "切片自{date} 阳向心美Official 直播\n---------------------------------------\n本视频由全自动切片型智能DD机上传~"}, "clips": {"upload_clips": false, "keep_clips_after_upload": true, "title": "【阳向心美】{date}直播精彩剪辑【自动切片】", "tid": 27, "tags": ["直播录播", "剪辑", "阳向心美", "虚拟主播", "VTuber", "虚拟UP主"], "desc": "切片自{date} 阳向心美Official 直播\n---------------------------------------\n本视频由全自动切片型智能DD机剪辑上传~"}}, "backup": false}, {"room_id": "22637920", "recorder": {"keep_raw_record": false}, "parser": {"interval": 60, "up_ratio": 4.5, "down_ratio": 0.6, "topK": 5}, "clipper": {"enable_clipper": true, "min_length": 60, "start_offset": -20, "end_offset": 10}, "uploader": {"account": {"username": "account@example.com", "password": "password"}, "copyright": 2, "record": {"upload_record": false, "keep_record_after_upload": true, "split_interval": 3600, "title": "【桃井最中Monaka】{date}直播录播", "tid": 27, "tags": ["直播录播", "桃井最中Monaka", "虚拟主播", "VTuber", "虚拟UP主"], "desc": "切片自{date} 桃井最中Monaka 直播\n---------------------------------------\n本视频由全自动切片型智能DD机上传~"}, "clips": {"upload_clips": true, "keep_clips_after_upload": true, "title": "【桃井最中Monaka】{date}直播精彩剪辑【自动切片】", "tid": 27, "tags": ["直播录播", "剪辑", "桃井最中Monaka", "虚拟主播", "VTuber", "虚拟UP主"], "desc": "切片自{date} 桃井最中Monaka 直播\n---------------------------------------\n本视频由全自动切片型智能DD机剪辑上传~"}}, "backup": false}]}
+{
+    "root": {
+        "check_interval": 60,
+        "print_interval": 10,
+        "data_path": "./",
+        "logger": {
+            "log_path": "./log",
+            "log_level": "INFO"
+        },
+        "request_header": {},
+        "uploader": {
+            "upload_by_edit": false,
+            "thread_pool_workers": 1,
+            "max_retry": 10
+        },
+        "enable_baiduyun": false
+    },
+    "spec": [
+        {
+            "room_id": "5561470",
+            "recorder": {
+                "keep_raw_record": false
+            },
+            "parser": {
+                "interval": 30,
+                "up_ratio": 2.5,
+                "down_ratio": 0.75,
+                "topK": 5
+            },
+            "clipper": {
+                "enable_clipper": false,
+                "min_length": 30,
+                "start_offset": -20,
+                "end_offset": 10
+            },
+            "uploader": {
+                "account": {
+                    "username": "bili_58282531214"
+                },
+                "copyright": 2,
+                "record": {
+                    "upload_record": true,
+                    "keep_record_after_upload": false,
+                    "split_interval": 3600,
+                    "title": "【Mia米娅-】{date}直播录播",
+                    "tid": 27,
+                    "tags": [
+                        "直播录播",
+                        "虚拟主播",
+                        "Mia米娅-"
+                    ],
+                    "desc": "{date}录播\n直播标题：{title}\nMia米娅-：https://space.bilibili.com/780791\n【自用备份】"
+                },
+                "clips": {
+                    "upload_clips": false,
+                    "keep_clips_after_upload": false,
+                    "title": "【Mia米娅-】{date}直播精彩剪辑【自动切片】",
+                    "tid": 27,
+                    "tags": [
+                        "直播录播",
+                        "剪辑",
+                        "虚拟主播",
+                        "Mia米娅-"
+                    ],
+                    "desc": ""
+                }
+            },
+            "backup": false
+        },
+        {
+            "room_id": "10997945",
+            "recorder": {
+                "keep_raw_record": false
+            },
+            "parser": {
+                "interval": 30,
+                "up_ratio": 2.5,
+                "down_ratio": 0.75,
+                "topK": 5
+            },
+            "clipper": {
+                "enable_clipper": false,
+                "min_length": 30,
+                "start_offset": -20,
+                "end_offset": 10
+            },
+            "uploader": {
+                "account": {
+                    "username": "null"
+                },
+                "copyright": 2,
+                "record": {
+                    "upload_record": false,
+                    "keep_record_after_upload": false,
+                    "split_interval": 3600,
+                    "title": "【小芽子】{date}直播录播",
+                    "tid": 27,
+                    "tags": [],
+                    "desc": "【小芽子】{date}直播录播"
+                },
+                "clips": {
+                    "upload_clips": false,
+                    "keep_clips_after_upload": false,
+                    "title": "【小芽子】{date}直播录播",
+                    "tid": 27,
+                    "tags": [],
+                    "desc": "【小芽子】{date}直播录播"
+                }
+            },
+            "backup": true
+        }
+    ]
+}

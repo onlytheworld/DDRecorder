@@ -1,10 +1,12 @@
 import datetime
 import logging
 import os
-import time
 import threading
+import time
+
 import requests
 import urllib3
+
 import utils
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -21,7 +23,7 @@ class BiliVideoChecker(threading.Thread):
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36 '
         }
         self.headers = {**default_headers, **
-                        config.get('root', {}).get('request_header', {})}
+                        config['root']['request_header']}
         self.session = requests.session()
         self.bvid = bvid
         self.path = path
@@ -43,7 +45,7 @@ class BiliVideoChecker(threading.Thread):
         logging.basicConfig(level=utils.get_log_level(self.config),
                             format='%(asctime)s %(thread)d %(threadName)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                             datefmt='%a, %d %b %Y %H:%M:%S',
-                            handlers=[logging.FileHandler(os.path.join(self.config.get('root', {}).get('logger', {}).get('log_path', "./log"), "VideoChecker_"+datetime.datetime.now(
+                            handlers=[logging.FileHandler(os.path.join(self.config['root']['logger']['log_path'], "VideoChecker_"+datetime.datetime.now(
                             ).strftime('%Y-%m-%d_%H-%M-%S')+'.log'), "a", encoding="utf-8")])
         while True:
             video_info = self.common_request("GET", self.check_url, {
