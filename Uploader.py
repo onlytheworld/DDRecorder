@@ -74,7 +74,7 @@ class Uploader(BiliLive):
             logging.error("解析密码文件时出现错误，请用户名密码是否正确")
             logging.error("错误详情："+str(e))
 
-    def upload(self, global_start: datetime.datetime) -> dict:
+    def upload(self, global_start: datetime.datetime, global_end: datetime.datetime) -> dict:
 
         return_dict = {}
         try:
@@ -114,11 +114,19 @@ class Uploader(BiliLive):
                 splits_parts = []
                 datestr = global_start.strftime(
                     '%Y{y}%m{m}%d{d}').format(y='年', m='月', d='日')
+                split_interval = datetime.timedelta(
+                    0, self.config['spec']['uploader']['record']['split_interval'])
                 filelists = os.listdir(self.splits_dir)
                 for filename in filelists:
                     if os.path.getsize(os.path.join(self.splits_dir, filename)) < 1024*1024:
                         continue
-                    title = filename
+                    i = int(os.path.splitext(filename)[0])
+                    start = global_start + split_interval*i
+                    end = global_start + split_interval*(i+1)
+                    if(end > global_end):
+                        end = global_end
+                    title = start.strftime(
+                        '%H:%M:%S~') + end.strftime('%H:%M:%S')
                     splits_parts.append(VideoPart(
                         path=os.path.join(self.splits_dir, filename),
                         title=title,
@@ -160,6 +168,6 @@ if __name__ == "__main__":
     }
     global_start = datetime.datetime(2021, 11, 18, 23, 37, 43)
     u = Uploader("data/outputs/5561470_2021-11-18_23-37-43", "data/splits/5561470_2021-11-18_23-37-43",
-                         config, '【歌杂】唱歌啦~')
+                 config, '【歌杂】唱歌啦~')
     d = u.upload(global_start)
     print("success")

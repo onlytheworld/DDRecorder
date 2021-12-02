@@ -105,13 +105,14 @@ def get_start_time(filename: str) -> datetime.datetime:
 
 
 class Processor(BiliLive):
-    def __init__(self, config: dict, record_dir: str, danmu_path: str):
+    def __init__(self, config: dict, global_start: datetime.datetime):
         super().__init__(config)
         self.config = config
-        self.record_dir = record_dir
-        self.danmu_path = danmu_path
-        self.global_start = utils.get_global_start_from_records(
-            self.record_dir)
+        self.global_start = global_start
+        self.record_dir = utils.init_record_dir(
+            self.room_id, self.global_start, config['root']['data_path'])
+        self.danmu_path = utils.init_danmu_log_dir(
+            self.room_id, self.global_start, config['root']['data_path'])
         self.merge_conf_path = utils.get_merge_conf_path(
             self.room_id, self.global_start, config['root']['data_path'])
         self.merged_file_path = utils.get_merged_filename(
@@ -184,9 +185,7 @@ class Processor(BiliLive):
                          ['format']['duration'])
         num_splits = int(duration) // split_interval + 1
         for i in range(num_splits):
-            output_file = os.path.join(
-                self.splits_dir,
-                f"{(self.global_start+datetime.timedelta(0,split_interval)*i).strftime('%Y%m%d_%H{h}%M{mi}').format(h='时', mi='分')}_{(self.global_start+datetime.timedelta(0,split_interval)*(i+1)).strftime('%H{h}%M{mi}').format(h='时',mi='分')}.mp4")
+            output_file = os.path.join(self.splits_dir, f"{i}.mp4")
             cmd = f'ffmpeg -y -ss {i*split_interval} -t {split_interval} -accurate_seek -i "{self.merged_file_path}" -c copy -avoid_negative_ts 1 "{output_file}"'
             _ = subprocess.run(cmd, shell=True, check=True,
                                stdout=self.ffmpeg_logfile_hander, stderr=self.ffmpeg_logfile_hander)

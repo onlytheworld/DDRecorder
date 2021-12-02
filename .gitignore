@@ -130,6 +130,7 @@ log/
 # !config/config.json
 ffmpeg/
 backup/
+*.json
 
 # vscode
 .vscode

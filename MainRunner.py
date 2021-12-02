@@ -37,8 +37,8 @@ class MainRunner():
         #                     handlers=[logging.FileHandler(os.path.join(self.config['root']['logger']['log_path'], "MainRunner_"+datetime.datetime.now(
         #                     ).strftime('%Y-%m-%d_%H-%M-%S')+'.log'), "a", encoding="utf-8")])
 
-    def proc(self) -> None:
-        p = Processor(self.config, self.blr.record_dir, self.bdr.danmu_dir)
+    def proc(self, global_start: datetime.datetime, global_end: datetime.datetime) -> None:
+        p = Processor(self.config, global_start)
         p.run()
 
         uploader_config = self.config['spec']['uploader']
@@ -47,7 +47,7 @@ class MainRunner():
             self.state_change_time.value = time.time()
             u = Uploader(p.outputs_dir, p.splits_dir,
                          self.config, self.roomname)
-            d = u.upload(p.global_start)
+            d = u.upload(global_start, global_end)
             if not uploader_config['record']['keep_record_after_upload'] and d.get("record", None) is not None and not self.config['root']['uploader']['upload_by_edit']:
                 rc = BiliVideoChecker(d['record']['bvid'],
                                       p.splits_dir, self.config)
@@ -95,15 +95,15 @@ class MainRunner():
                     record_process.join()
                     danmu_process.join()
 
+                    end = datetime.datetime.now()
                     self.current_state.value = int(
                         utils.state.PROCESSING_RECORDS)
                     self.state_change_time.value = time.time()
 
                     self.prev_live_status = False
-                    proc_process = Process(target=self.proc)
+                    proc_process = Process(target=self.proc, args=(start, end))
                     proc_process.start()
-                else:
-                    time.sleep(self.config['root']['check_interval'])
+                time.sleep(self.config['root']['check_interval'])
         except KeyboardInterrupt:
             return
         except Exception as e:
