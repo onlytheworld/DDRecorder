@@ -117,10 +117,6 @@ class Processor(BiliLive):
             self.room_id, self.global_start, config['root']['data_path'])
         self.merged_file_path = utils.get_merged_filename(
             self.room_id, self.global_start, config['root']['data_path'])
-        self.outputs_dir = utils.init_outputs_dir(
-            self.room_id, self.global_start, config['root']['data_path'])
-        self.splits_dir = utils.init_splits_dir(
-            self.room_id, self.global_start, config['root']['data_path'])
         self.times = []
         self.live_start = self.global_start
         self.live_duration = 0
@@ -154,6 +150,8 @@ class Processor(BiliLive):
             self.times[-1][0]-self.times[0][0]).total_seconds()+self.times[-1][1]
 
     def __cut_video(self, outhint: List[str], start_time: int, delta: int) -> subprocess.CompletedProcess:
+        self.outputs_dir = utils.init_outputs_dir(
+            self.room_id, self.global_start, self.config['root']['data_path'])
         output_file = os.path.join(
             self.outputs_dir, f"{self.room_id}_{self.global_start.strftime('%Y-%m-%d_%H-%M-%S')}_{start_time:012}_{outhint}.mp4")
         cmd = f'ffmpeg -y -ss {start_time} -t {delta} -accurate_seek -i "{self.merged_file_path}" -c copy -avoid_negative_ts 1 "{output_file}"'
@@ -176,6 +174,8 @@ class Processor(BiliLive):
                     0, int(start)), int(delta))
 
     def split(self, split_interval: int = 3600) -> None:
+        self.splits_dir = utils.init_splits_dir(
+            self.room_id, self.global_start, self.config['root']['data_path'])
         if split_interval <= 0:
             shutil.copy2(self.merged_file_path, os.path.join(
                 self.splits_dir, f"{self.room_id}_{self.global_start.strftime('%Y-%m-%d_%H-%M-%S')}_0000.mp4"))
